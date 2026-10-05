@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migração de Contas - Sicoob Credibom-Credesp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-dark: #003641;      /* Verde petróleo Sicoob */
+      --primary-teal: #00ae9d;      /* Turquesa */
+      --accent-lime: #79b93c;       /* Verde folha */
+      --bg-gradient: radial-gradient(circle at 50% 0%, #e8eff2 0%, #dbe7eb 100%);
+      --surface: #ffffff;
+      --text-main: #142428;
+      --text-muted: #5e7379;
+      --border-subtle: #dbe5e8;
+      --danger: #cf3335;
+      --danger-bg: #fff5f5;
+      --warning: #b7791f;
+      --warning-bg: #fffaf0;
+      --radius-lg: 16px;
+      --radius-sm: 8px;
+      --shadow-card: 0 12px 36px rgba(0, 54, 65, 0.10), 0 2px 6px rgba(0, 54, 65, 0.04);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* CARD PRINCIPAL */
+    .main-container {
+      width: 100%;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .top-strip {
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-teal), var(--accent-lime));
+    }
+
+    .content-body {
+      padding: 36px 30px;
+    }
+
+    /* CABEÇALHO */
+    header {
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .tag-coop {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: #eef8f7;
+      color: var(--primary-teal);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      border: 1px solid #d3f0ed;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* FORMULÁRIO */
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-box svg {
+      position: absolute;
+      left: 14px;
+      width: 20px;
+      height: 20px;
+      color: var(--text-muted);
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      height: 52px;
+      padding: 0 16px 0 44px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      background-color: #f7fafb;
+      border: 1.8px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: var(--transition);
+      letter-spacing: 0.02em;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary-teal);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(0, 174, 157, 0.15);
+    }
+
+    input[type="text"]:focus + svg {
+      color: var(--primary-teal);
+    }
+
+    .input-helper {
+      margin-top: 8px;
+      font-size: 0.77rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    /* BOTÕES */
+    button.btn {
+      width: 100%;
+      height: 50px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--primary-dark);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 54, 65, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: #00252d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 54, 65, 0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background-color: #edf3f5;
+      color: var(--primary-dark);
+      margin-top: 20px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e2ecf0;
+      color: #001f26;
+    }
+
+    /* SESSÃO DA BARRA DE CARREGAMENTO */
+    .loading-container {
+      display: none;
+      padding: 10px 0;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .progress-status {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .progress-percent {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary-teal);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background-color: #e4edf0;
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary-teal), var(--accent-lime));
+      border-radius: 20px;
+      transition: width 0.2s ease-out;
+    }
+
+    .loading-subtext {
+      margin-top: 10px;
+      font-size: 0.77rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* RESULTADOS */
+    .result-container {
+      display: none;
+      animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .account-card-result {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--border-subtle);
+    }
+
+    .account-card-result:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    /* BADGES */
+    .badges-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-ativa {
+      background-color: #eaf8ee;
+      color: #1e7e34;
+      border: 1px solid #c7eed0;
+    }
+
+    .badge-encerrada {
+      background-color: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #f9d4d5;
+    }
+
+    .badge-modalidade {
+      background-color: #e6f6f5;
+      color: #007c70;
+      border: 1px solid #c2ece8;
+    }
+
+    /* CARD DE DESTAQUE */
+    .highlight-card {
+      background: linear-gradient(145deg, #003641 0%, #004d5c 100%);
+      border-radius: 12px;
+      color: #ffffff;
+      padding: 20px;
+      margin: 14px 0;
+      box-shadow: 0 8px 20px rgba(0, 54, 65, 0.16);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .highlight-card::after {
+      content: "";
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(0, 174, 157, 0.35) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .highlight-title {
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--primary-teal);
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .highlight-data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .data-item .label {
+      font-size: 0.73rem;
+      color: #a4c9d1;
+      display: block;
+      margin-bottom: 3px;
+      font-weight: 500;
+    }
+
+    .data-item .value {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .secondary-info {
+      background-color: #f6fafb;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .secondary-info .value {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 0.95rem;
+    }
+
+    /* ALERTAS */
+    .alert-encerrada {
+      background-color: var(--warning-bg);
+      border-left: 4px solid var(--warning);
+      padding: 14px 16px;
+      border-radius: 6px;
+      margin-top: 14px;
+    }
+
+    .alert-encerrada h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--warning);
+      margin-bottom: 4px;
+    }
+
+    .alert-encerrada p {
+      font-size: 0.82rem;
+      color: #744210;
+      line-height: 1.45;
+    }
+
+    .alert-error {
+      background-color: var(--danger-bg);
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .alert-error svg {
+      width: 32px;
+      height: 32px;
+      color: var(--danger);
+      margin-bottom: 8px;
+    }
+
+    .alert-error h4 {
+      color: var(--danger);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .alert-error p {
+      color: #7f1d1d;
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    /* RODAPÉ */
+    footer.app-footer {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #63777d;
+      font-weight: 500;
+    }
+
+    footer.app-footer span {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <main class="main-container">
+      <div class="top-strip"></div>
+
+      <div class="content-body">
+        <header>
+          <div class="tag-coop">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Sicoob Credibom-Credesp
+          </div>
+          <h1>Migração de Contas</h1>
+          <p>Consulte os novos dados da sua agência e conta. Sicoob Credibom-Credesp.</p>
+        </header>
+
+        <!-- FORMULÁRIO DE CONSULTA -->
+        <section id="search-section">
+          <form id="migration-form" onsubmit="event.preventDefault(); handleSearch();">
+            <div class="form-group">
+              <label for="conta-antiga">Conta Antiga (com dígito)</label>
+              <div class="input-box">
+                <input 
+                  type="text" 
+                  id="conta-antiga" 
+                  placeholder="Ex: 12345-6" 
+                  maxlength="12" 
+                  autocomplete="off" 
+                  inputmode="numeric"
+                  required 
+                />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <div class="input-helper">Origem: Agência 4097 - Sicoob Credesp • Conta Corrente ou Conta Salário</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="btn-submit">
+              Consultar
+            </button>
+          </form>
+        </section>
+
+        <!-- CARREGAMENTO COM BARRA DE PERCENTUAIS -->
+        <section id="loading-section" class="loading-container">
+          <div class="progress-header">
+            <span class="progress-status" id="progress-status">Consultando base de dados...</span>
+            <span class="progress-percent" id="progress-percent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+          <p class="loading-subtext">Aguarde a verificação cadastral no servidor...</p>
+        </section>
+
+        <!-- RESULTADOS DA CONSULTA -->
+        <section id="result-section" class="result-container">
+          <div id="result-content"></div>
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+            Nova Consulta
+          </button>
+        </section>
+      </div>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="app-footer">
+      <span>Produzido por Carlos Gabriel Cançado.</span> • <span>Versão: 1.03</span>
+    </footer>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbylH7E3QhpXBdG8PLbEHKy38e6XHmcOzHSQshBpf-KUkGJ0NF2n2AdoU76Wmst94wU/exec";
+
+    // A base agora inicia como nula e só é buscada após o clique em "Consultar"
+    let migrationDatabase = null;
+
+    const inputConta = document.getElementById("conta-antiga");
+    const searchSection = document.getElementById("search-section");
+    const loadingSection = document.getElementById("loading-section");
+    const resultSection = document.getElementById("result-section");
+    const resultContent = document.getElementById("result-content");
+    const progressFill = document.getElementById("progress-fill");
+    const progressPercent = document.getElementById("progress-percent");
+    const progressStatus = document.getElementById("progress-status");
+
+    // Foco automático no campo ao entrar na página
+    window.addEventListener("DOMContentLoaded", () => {
+      inputConta.focus();
+    });
+
+    // Máscara da conta (traço antes do último dígito DV)
+    inputConta.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 1) {
+        e.target.value = value.slice(0, -1) + "-" + value.slice(-1);
+      } else {
+        e.target.value = value;
+      }
+    });
+
+    function normalize(str) {
+      return (str || "").replace(/\D/g, "").trim();
+    }
+
+    function setProgress(val, statusText) {
+      const clamped = Math.min(Math.max(val, 0), 100);
+      progressFill.style.width = clamped + "%";
+      progressPercent.innerText = clamped + "%";
+      if (statusText) progressStatus.innerText = statusText;
+    }
+
+    // ========================================================
+    // CONSULTA COM BARRA DE PERCENTUAIS
+    // ========================================================
+    async function handleSearch() {
+      const inputVal = inputConta.value.trim();
+      const rawInput = normalize(inputVal);
+
+      if (!rawInput) return;
+
+      // 1. Alterna para a tela de carregamento com a barra
+      searchSection.style.display = "none";
+      resultSection.style.display = "none";
+      loadingSection.style.display = "block";
+      setProgress(5, "Conectando ao servidor...");
+
+      // 2. Animação de progresso dinâmico
+      let currentProgress = 5;
+      const progressInterval = setInterval(() => {
+        if (currentProgress < 88) {
+          currentProgress += Math.floor(Math.random() * 8) + 4;
+          if (currentProgress > 88) currentProgress = 88;
+          setProgress(currentProgress, currentProgress > 50 ? "Processando contas..." : "Recebendo dados da planilha...");
+        }
+      }, 140);
+
+      try {
+        // 3. Busca os dados na API apenas se ainda não estiverem em memória
+        if (!migrationDatabase) {
+          const response = await fetch(API_URL);
+          const rawData = await response.json();
+
+          migrationDatabase = rawData.map(row => {
+            const cleanRow = {};
+            for (let key in row) {
+              const normalizedKey = key.toLowerCase().replace(/[^a-z0-9]/g, "");
+              cleanRow[normalizedKey] = String(row[key] || "").trim();
+            }
+            return {
+              agenciaAntiga: cleanRow.agenciaantiga || "4097",
+              contaAntiga: cleanRow.contaantiga || "",
+              modalidade: cleanRow.modalidade || cleanRow.tipoconta || "Conta Corrente",
+              agenciaNova: cleanRow.agencianova || "3099",
+              contaNova: cleanRow.contanova || "-",
+              status: (cleanRow.status || "").toUpperCase()
+            };
+          });
+        }
+
+        // Finaliza o carregamento em 100%
+        clearInterval(progressInterval);
+        setProgress(100, "Concluído!");
+
+        // Pequena pausa para o usuário ver o 100% antes de mostrar o resultado
+        setTimeout(() => {
+          loadingSection.style.display = "none";
+          const accountsFound = migrationDatabase.filter(
+            item => normalize(item.contaAntiga) === rawInput
+          );
+          renderResult(accountsFound, inputVal);
+        }, 320);
+
+      } catch (err) {
+        clearInterval(progressInterval);
+        console.error("Erro na consulta:", err);
+        loadingSection.style.display = "none";
+        resultSection.style.display = "block";
+        resultContent.innerHTML = `
+          <div class="alert-error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h4>Falha de Conexão</h4>
+            <p>Ocorreu um problema ao consultar a base de dados remota. Verifique a conexão com a internet e tente novamente.</p>
+          </div>
+        `;
+      }
+    }
+
+    // ========================================================
+    // RENDERIZAÇÃO DOS RESULTADOS
+    // ========================================================
+    function renderResult(accounts, typedValue) {
+      resultSection.style.display = "block";
+
+      if (!accounts || accounts.length === 0) {
+        resultContent.innerHTML = `
+          <div class="alert-error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h4>Conta não localizada</h4>
+            <p>Não encontramos a conta <strong>${typedValue}</strong> na base de migração da Agência 4097. Verifique o número digitado e tente novamente.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      accounts.forEach(account => {
+        const isAtiva = account.status === "ATIVA";
+        const statusBadgeClass = isAtiva ? "badge-ativa" : "badge-encerrada";
+        const statusText = isAtiva ? "Ativa" : "Encerrada";
+
+        html += `
+          <div class="account-card-result">
+            <div class="badges-row">
+              <span class="badge ${statusBadgeClass}">${statusText}</span>
+              <span class="badge badge-modalidade">${account.modalidade}</span>
+            </div>
+
+            <div class="secondary-info">
+              <span style="color: var(--text-muted);">Conta Antiga (Ag. ${account.agenciaAntiga})</span>
+              <span class="value">${account.contaAntiga}</span>
+            </div>
+
+            ${isAtiva ? `
+              <div class="highlight-card">
+                <div class="highlight-title">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                  Novos Dados de Destino
+                </div>
+                <div class="highlight-data-grid">
+                  <div class="data-item">
+                    <span class="label">Nova Agência</span>
+                    <span class="value">${account.agenciaNova}</span>
+                  </div>
+                  <div class="data-item">
+                    <span class="label">Nova ${account.modalidade}</span>
+                    <span class="value">${account.contaNova}</span>
+                  </div>
+                </div>
+              </div>
+            ` : `
+              <div class="alert-encerrada">
+                <h4>Conta Encerrada na Origem</h4>
+                <p>Esta <strong>${account.modalidade}</strong> consta como <strong>ENCERRADA</strong> na agência 4097 e não possui novos dados para migração.</p>
+              </div>
+            `}
+          </div>
+        `;
+      });
+
+      resultContent.innerHTML = html;
+    }
+
+    function resetForm() {
+      resultSection.style.display = "none";
+      loadingSection.style.display = "none";
+      searchSection.style.display = "block";
+      inputConta.value = "";
+      inputConta.focus();
+    }
+  </script>
+</body>
+</html>
